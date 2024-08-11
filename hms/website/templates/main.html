@@ -1,0 +1,242 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Strona głowna{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'fontello/css/fontello.css' %}" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        body {
+            background-color: #3b404e;
+            margin: 0;
+            padding: 0;
+        }
+        #nav_menu{
+            width:100%;
+            height:36px;
+            padding:20px 0;
+            background-color:#107d84;
+            text-align:center;
+            border-top:4px solid #31505c;
+            border-bottom:3px solid #116268;
+            position:sticky;
+            top:0;
+            z-index:10000;
+            margin:0;
+        }
+
+        #nav_menu ol{
+            padding:0;
+            margin:0;
+            list-style-type:none;
+            font-size:18px;
+            height:35px;
+            line-height:200%;
+            display:inline-block;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 600;
+        }
+
+        #nav_menu ol a{
+            color:#bde5e1;
+            text-decoration:none;
+            display:block;
+        }
+
+        #nav_menu ol > li{
+            float:left;
+            min-width:150px;
+            max-width: 200px;
+            height:40px;
+            padding: 0px 2px;
+            border-right:2px dashed #155155;
+        }
+
+        #nav_menu ol > li:first-child{
+            border-left:2px dashed #155155;
+        }
+
+        #nav_menu ol > li:hover{
+            background-color:#198991;
+        }
+
+        #nav_menu ol > li:hover > a{
+            color: #0f5c61;
+        }
+
+        #nav_menu ol > li > ul{
+            list-style-type:none;
+            padding:0px;
+            margin:0;
+            height:40px;
+            display:none;
+            line-height:22px;
+            font-size: 16px;
+        }
+
+        #nav_menu ol > li:hover > ul{
+            display:block;
+        }
+
+        #nav_menu ol > li > ul > li{
+            background-color:#17838a;
+            position: relative;
+            z-index:100;
+            border-top:2px dashed #16575c;
+            padding: 3px;
+        }
+
+        #nav_menu ol > li > ul > li:hover{
+            background-color: #1e7980;
+        }
+
+        #nav_menu ol > li > ul > li:hover > a{
+            color: #79d2df;
+        }
+
+        #zGh{
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size:70px;
+            color:#138d96;
+            text-shadow: 5px 5px 4px #11595e;
+            display: flex;
+            justify-content: space-between;
+            padding-left: 20px;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            padding-bottom: 10px;
+            background-color: #364855;
+            align-items: center;
+        }
+
+        #zegar{
+            font-size:50px;
+            color:#25a8b1;
+            text-shadow: 3px 3px 1px #11686e;
+        }
+        #data{
+            font-size:30px;       
+            color:#25a8b1;
+            text-shadow: 3px 3px 1px #11686e;
+        }
+        {% block css %}{% endblock %}
+    </style>
+
+    <script>
+        function zegarek() {
+            var data = new Date();
+            var godzina = data.getHours();
+            var minuta = data.getMinutes();
+            var sekunda = data.getSeconds();
+                
+            if (minuta < 10) minuta = "0" + minuta;
+            if (sekunda < 10) sekunda = "0" + sekunda;          
+                
+            var pokazDate = godzina + ':' + minuta + ':' + sekunda;
+            document.getElementById("zegar").innerHTML = pokazDate;
+                
+            setTimeout(zegarek, 1000);            
+        }    
+        function data() {
+            var data = new Date();
+            var dzien = data.getDate();
+            var dzienN = data.getDay();
+            var miesiac = data.getMonth();
+            var rok = data.getFullYear();
+                            
+            var dni = new Array("niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota");
+            var miesiace = new Array("stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia");
+                
+            var pokazDate = dni[dzienN] + ', ' + dzien + "<br />" + miesiace[miesiac] + ' ' + rok;
+            document.getElementById("data").innerHTML = pokazDate;
+                
+        }    
+        {% block js %}{% endblock %}     
+    </script>    
+
+</head>
+<body onload="data(), zegarek()">
+    <div id="zGh">
+        <span id="data" ></span>
+        <span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">NeuRoLogiA</span> <!-- Klikinia Neurologiczna -->
+        <span id="zegar"></span>
+    </div>
+    <div id="nav_menu">
+        <ol>
+            <li><a href="{% url 'main' %}">Strona główna</a></li>
+            <li><a href="#">Apteka</a>
+                <ul>
+                    <li><a href="#">Asortyment</a></li>
+                    <li><a href="#">Rośliny</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                </ul>
+            </li>
+            {% if user.is_authenticated %}
+                <li><a href="#">Szpital</a>
+                    <ul>
+                        <li><a href="#">Pokoje</a></li>
+                        <li><a href="#">Sale</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                    </ul>
+                </li>
+                {% if request.user.profession == 'lekarz naczelny' or  request.user.profession == 'dyrektor' or  request.user.profession == 'ordynator' %}
+                    <li><a href="#">Pracownicy</a>
+                        <ul>
+                            <li><a href="{% url 'display_block_workers' profession='ochroniarz' %}">Wyswietl pracowników</a></li>
+                            <li><a href="{% url 'add_new_worker' %}">Dodaj pracownika</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Spotkania</a>
+                        <ul>
+                            <li><a href="{% url 'view_meets_schedule' %}"> Wyświetl spotkania </a></li>
+                            <li><a href="{% url 'create_meet' %}"> Utwórz nowe spotkanie </a></li>
+                            <li><a href="{% url 'all_meets' %}"> Wyświetl wszystkie spotkania </a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Grafik</a>
+                        <ul>
+                            <!-- <li><a href="#"> Utwórz nowe spotkanie </a></li> -->
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if request.user.profession == 'farmaceuta' or request.user.profession == 'recepcjonista' or request.user.profession == 'pielegniarz' or request.user.profession == 'lekarz specjalista' or request.user.profession == 'ordynator' or request.user.profession == 'dyrektor' or request.user.profession == 'lekarz naczelny' %}
+                    <li><a href="#">Pacjenci</a>
+                        <ul>
+                            <li><a href="{% url 'display_patients' %}">Wyświetl pacjentów</a></li>
+                            <li><a href="{% url 'register_new_patient' %}">Rejestrowanie nowego pacjenta</a></li>
+                            <li><a href="{% url 'make_an_appointment' %}">Umów wizytę</a></li>
+                            <li><a href="{% url 'set_a_test' %}">Umów badanie</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li><a href="#">{{ request.user.name }} {{ request.user.surname }}</a>
+                    <ul>
+                        <li><a href="#">Wiadomości</a></li>
+                        <li><a href="#">Grafik</a></li>
+                        <li><a href="{% url 'work_hours' year=now|date:'Y' month=now|date:'m' %}">Godziny pracy {{now|date:'Y'}} {{now|date:'m'}}</a></li>
+                        <li><a href="{% url 'logout' %}">Wyloguj się</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Zaloguj się</a></li>
+            {% endif %}
+
+        </ol>
+    </div>
+    <div style="border-bottom:5px dotted #116268;"></div>
+    {% block content %}{% endblock %}
+</body>
+</html>

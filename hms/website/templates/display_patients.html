@@ -1,0 +1,99 @@
+{% extends 'main.html' %}
+
+{% block title %}Pacjeńci{% endblock %}
+
+{% block css %}
+    .patient_tile {
+        background-color: #7f7855;
+        border-radius: 30px;
+        width: 444px;
+        margin: 20px;
+        text-align: center;
+        color: rgb(113, 85, 20);
+        text-shadow: 1px 1px 1px rgb(23, 23, 23);
+        font-size: 25px;
+        box-shadow: 6px 6px 0px #6d6749;
+        line-height: 30px;
+    }
+    #display_patients {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    .name_patient {
+        width: 100%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: rgb(82, 58, 0);
+        font-size: 35px;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        border-radius: 30px;
+        background: #7c744b;
+        border-bottom: 2px solid #665f38;
+        border-right: 1px solid #665f38;
+    }
+    .description {
+        margin-top: 10px;
+        height: 90px;
+        padding: 5px 15px;
+        border-radius: 30px;
+        background: #7c744b;
+        border: 2px solid #665f38;
+        text-align: justify;
+        white-space: normal;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        font-size: 80%;
+    }
+    .description::-webkit-scrollbar {
+        display: none;
+    }
+    .info{
+        color: #824e24;
+    }
+    #new_patient {
+        font-size:40px;
+        background-color: #7f7855;
+        color: #523a00;
+        border: 3px dashed #523a00;
+        border-radius: 30px; 
+        padding: 10px 25px;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-shadow: 2px 2px 1px #665f38;
+        text-decoration: none;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
+{% endblock %}
+
+{% block js %}
+    $(document).ready(function(){
+        $(".patient_tile").contextmenu(function (e) {
+            e.preventDefault();
+            var id = $(this).closest('.patient_tile').data('patient-id');
+            var url = `/edit_patient/${id}/`;
+            window.location.href = url;
+        });
+    });
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'register_new_patient' %}" id="new_patient">+</a>  
+    <div id="display_patients">
+        {% for patient in patients %}
+            <div class="patient_tile" data-patient-id="{{patient.id}}">
+                <div class="name_patient">{{patient.name}} {{patient.surname}}</div>
+                Pesel: <span class="info"> {{patient.pesel}} </span><br>
+                Płeć: <span class="info">{{patient.get_gender_display}} </span><br>
+                Nr. Telefonu: <span class="info">{{patient.phone_numer}} </span><br>
+                Wojewódzctwo: <span class="info">{{patient.get_terrain_display}} </span><br>
+                Miasto rodzinne: <span class="info">{{patient.city}} </span><br>
+                Data urodzenia: <span class="info">{{patient.birthday}} </span><br>
+                Wiek: <span class="info">{{patient.age}} </span><br>
+                Data dodania: <span class="info">{{patient.join_date}} </span><br>
+                <div class="description">{{patient.description}}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

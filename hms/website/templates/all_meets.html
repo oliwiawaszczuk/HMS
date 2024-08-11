@@ -1,0 +1,111 @@
+{% extends 'main.html' %}
+
+{% block title %}Archiwum Spotkań{% endblock %}
+
+{% block css %}
+<style>
+    body{
+        background-color: #3b404e;
+    }
+    #display_workers {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    .meet_tile, .meet_tile_old {
+        background-color: #72471f;
+        border-radius: 30px;
+        width: 444px;
+        margin: 20px;
+        text-align: center;
+        color: #806d18;
+        text-shadow: 1px 1px 1px #000000;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 28px;
+        box-shadow: 6px 6px 0px #5b330e;
+    }
+    .meet_title, .meet_title_old {
+        width: 100%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: #8c7718;
+        font-size: 35px;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        border-radius: 30px;
+        background: #7d5025;
+        border-bottom: 2px solid #583310;
+        border-right: 1px solid #583310;
+    }
+    .description, .description_old {
+        margin-top: 10px;
+        height: 90px;
+        padding: 5px 15px;
+        border-radius: 30px;
+        background: #7d5025;
+        border: 2px solid #633c18;
+        text-align: justify;
+        white-space: normal;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        font-size: 80%;
+    }
+    .meet_tile_old{
+        background-color: #44403c;
+        color: #5c5a57;
+        box-shadow: 6px 6px 0px #2f2c29;
+    }
+    .meet_title_old{
+        color: #61615c;
+        background: #504c47;
+        border-bottom: 2px solid #393531;
+        border-right: 1px solid #393531;
+    }
+    .description_old{
+        background: #504c47;
+        border: 2px solid #393531;
+    }
+    .description::-webkit-scrollbar, .description_old::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}  
+    <div id="display_workers">
+        {% for meet in meets %}
+            {% if meet.date >= today %}
+                <div class="meet_tile">
+                    <div class="meet_title">
+                        {{meet.title}}<br>
+                        {{meet.date|date:"d-m-Y"}}
+                    </div>
+                    Pokój: {{meet.room}}<br>
+                    Początek: {{meet.start|time:"H:i"}}<br>
+                    Koniec: {{meet.end|time:"H:i"}}<br>
+                    <div class="description" style="min-height: 150px;">
+                        {% for worker in meet.workers.all %}
+                            {{worker.name}} {{worker.surname}}<br>
+                        {% endfor %}
+                    </div>
+                    <div class="description">{{meet.description}}</div>
+                </div>
+            {% else %}
+                <div class="meet_tile_old">
+                    <div class="meet_title_old">
+                        {{meet.title}}<br>
+                        {{meet.date|date:"d-m-Y"}}
+                    </div>
+                    Pokój: {{meet.room}}<br>
+                    Początek: {{meet.start|time:"H:i"}}<br>
+                    Koniec: {{meet.end|time:"H:i"}}<br>
+                    <div class="description_old" style="min-height: 150px;">
+                        {% for worker in meet.workers.all %}
+                            {{worker.name}} {{worker.surname}}<br>
+                        {% endfor %}
+                    </div>
+                    <div class="description_old">{{meet.description}}</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>     
+{% endblock %}  

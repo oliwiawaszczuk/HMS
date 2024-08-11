@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Zaloguj się</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            body {
+                background-color: #3b404e;
+            }
+            #content {
+                width: 98vw;
+                height: 98vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            #login_div {
+                width: 550px;
+                height: 300px;
+                background-color: #333e5c;
+                border-radius: 40px;
+                border: 6px solid #1d1f24;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 35px;
+                color: #0f0f11;
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                text-shadow: 2px 2px 2px #262e45;
+            }
+            .tile input {
+                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 22px;
+                color: #0e0e0f;
+                border: 3px solid #1d1f24;
+                border-radius: 20px;
+                background-color: #4b587b;
+                padding: 5px 12px;
+                text-shadow: 1px 1px 1px #303853;
+            }
+            .tile input:focus{
+                background-color: #58668d;
+                outline: none;
+            }
+            .tile button {
+                font-size: 30px;
+                font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                padding: 8px 40px;
+                border-radius: 30px;
+                border: 3px solid #21242b;
+                text-shadow: 2px 2px 2px #333c57;
+                background-color: #435070;
+                color: #1e2436;
+                cursor: pointer;
+            }
+            .tile button:hover{
+                background-color: #262d43;
+                color: #435070;
+                border: 3px solid #46526d;
+            }
+            .tile {
+                text-align: center;
+                padding: 5px;
+            }
+            .tile a {
+                font-size: 22px;
+                color: #253355;
+                text-shadow: 1px 1px 1px #151719;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+        </style>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!--        <script>-->
+<!--            $(document).ready(function () {-->
+<!--                $("#submit").click(function () {-->
+<!--                    console.log("Kliknięto");-->
+<!--                    var name_val = $("#login").val();-->
+<!--                    var password_val = $("#password").val();-->
+
+<!--                    $.ajax({-->
+<!--                        type: 'POST',-->
+<!--                        url: '/loging/',-->
+<!--                        data: {-->
+<!--                            'name_val': name_val,-->
+<!--                            'password_val': password_val,-->
+<!--                            'csrfmiddlewaretoken': csrf_token,-->
+<!--                        },-->
+<!--                        success: function (response) {-->
+<!--                            console.log("Zalogowano");-->
+<!--                            var url = `/main/`;-->
+<!--                            window.location.href = url;-->
+<!--                        },-->
+<!--                        error: function (error) {-->
+<!--                            console.log("Nie udało się zalogować");-->
+<!--                        },-->
+<!--                    });-->
+<!--                });-->
+<!--            });-->
+<!--        </script>-->
+
+    </head>
+    <body>
+        <div id="content">
+            <div id="login_div">
+                <form method="post" id="login-form">
+                    {% csrf_token %}
+                    <div class="tile" style="margin-top: 20px;">
+                        <label for="login">Login: </label>
+                        <input id="login" name="name_val">
+                    </div>
+                    <div class="tile">
+                        <label for="password">Hasło: </label>
+                        <input type="password" id="password" name="password_val">
+                    </div>
+                    <div class="tile" style="margin-top: 20px; padding-bottom: 0;">
+                        <button type="button" id="submit">Zaloguj</button>
+                    </div>
+                    <div class="tile">
+                        <a href="{% url 'main'%}">-> Strona główna <-</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#submit").click(function () {
+                    console.log("Kliknięto");
+                    var name_val = $("#login").val();
+                    var password_val = $("#password").val();
+                    var csrf_token = $("[name='csrfmiddlewaretoken']").val();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/loging/',
+                        data: {
+                            'name_val': name_val,
+                            'password_val': password_val,
+                            'csrfmiddlewaretoken': csrf_token,
+                        },
+                        success: function (response) {
+                            console.log("Odpowiedź od serwera:", response);
+                            if (response.status === 'success') {
+                                console.log("Zalogowano");
+                                var url = '/main/';
+                                window.location.href = url;
+                            } else {
+                                alert("Nie udało się zalogować");
+                            }
+                        },
+                        error: function (error) {
+                            console.log("Błąd AJAX:", error);
+                        },
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,124 @@
+{% extends 'main.html' %}
+
+
+{% block title %}Edytuj spotkanie{% endblock %}
+
+
+{% block css %}
+<style>
+    #content a {
+        color: #388569;
+        text-shadow: 2px 2px 2px #352d16;
+        font-family:'Courier New', Courier, monospace;
+        font-size: 35px;
+        text-align: center;
+        text-decoration: none;
+    }
+    #content h1 {
+        color: #72471f;
+        text-shadow: 2px 2px 2px #352b16;
+        font-family:'Courier New', Courier, monospace;
+        font-size: 45px;
+    }
+    #form_edit {
+        border: 12px double #72471f;
+        border-radius: 30px;
+        margin: 0 150px;
+        padding: 20px 0;
+        color: #82552c;
+        text-shadow: 2px 2px 2px #394316;
+        font-size: 28px;
+        text-align: center;
+        background-color: #494243;
+    }
+    input, select, textarea {
+        color: #b5763a;
+        font-family:'Courier New', Courier, monospace;
+        font-weight: 600;
+        background-color: #72471f;
+        border: 2px solid #503215;
+        font-size: 20px;
+        border-radius: 5px;
+        padding: 2px 5px;
+    }
+    input::placeholder{
+        color: #92663d;
+    }
+    input:focus, select:focus, textarea:focus {
+        background-color: #86572c;
+        border: 2px solid #63401f;
+        outline: none;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="submit"] {
+        font-size: 28px;
+        padding: 10px 50px;
+        border-radius: 20px;
+        box-shadow: 4px 4px;
+        margin-bottom: 2px;
+    }
+    input[type="submit"]:hover {
+        margin: 2px 0 0 2px;
+        box-shadow: 2px 2px;
+    }
+    #id_workers {
+        color:#92663d;
+    }
+    button {
+        background-color: #815227;
+        margin-bottom: 8px;
+        padding: 8px 10px;
+        border: 2px solid #72471f;
+        border-radius: 10px;
+        color: #b5763a;
+    }
+</style>
+{% endblock %}
+
+{% block js %}
+
+$(document).ready(function(){
+    
+    let selected = false;
+
+    $("#select_all").click(function (e) {
+        e.preventDefault();
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = !selected;
+        });
+        if (!selected) {
+            $(this).html('Odznacz wszystkich');
+        } else {
+            $(this).html('Zaznacz wszystkich');
+        }
+        selected = !selected;
+    });
+});
+
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <h1 style="padding-left: 20px;">EDYTUJ SPOTKANIE</h1>
+    </div>
+    <div id="form_edit">
+        <form method="post" action="{% url 'edited_meet' id=meet.id %}">
+            {% csrf_token %}
+            {% for field in form %}
+                {{field.label_tag}} {{field}}
+                {% if field.name == 'workers' %} 
+                    <button id="select_all">Zaznacz wszystkich</button>
+                {% endif %}
+                <br>
+            {% endfor %}
+            <input type="submit" value="Dodaj" style="padding: 6px 50px; border-radius: 20px;">
+        </form>
+    </div>
+</div>
+{% endblock %}

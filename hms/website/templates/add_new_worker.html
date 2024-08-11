@@ -1,0 +1,105 @@
+{% extends 'main.html' %}
+
+{% block title %}Dodawanie nowego pracownika{% endblock %}
+
+{% block css %}
+    #content a {
+        color: #388569;
+        text-shadow: 2px 2px 2px #163530;
+        font-family:'Courier New', Courier, monospace;
+        font-size: 35px;
+        text-align: center;
+        text-decoration: none;
+    }
+    #content h1 {
+        color: #366760;
+        text-shadow: 2px 2px 2px #163530;
+        font-family:'Courier New', Courier, monospace;
+        font-size: 45px;
+    }
+    #form_edit {
+        border: 12px double #366b73;
+        border-radius: 30px;
+        margin: 0 150px;
+        padding: 20px 0;
+        color: #3aa494;
+        text-shadow: 2px 2px 2px #16433c;
+        font-size: 28px;
+        text-align: center;
+        background-color: #3B4956;
+    }
+    input, select, textarea {
+        color: #001b1f;
+        font-family:'Courier New', Courier, monospace;
+        font-weight: 600;
+        background-color: #366760;
+        border: 2px solid #163530;
+        font-size: 20px;
+        border-radius: 5px;
+        padding: 2px 5px;
+    }
+    input::placeholder{
+        color: #173438;
+    }
+    input:focus, select:focus, textarea:focus {
+        background-color: #3a736b;
+        border: 2px solid #17322d;
+        outline: none;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="submit"] {
+        font-size: 28px;
+        padding: 10px 50px;
+        border-radius: 20px;
+        box-shadow: 4px 4px;
+        margin-bottom: 2px;
+    }
+    input[type="submit"]:hover {
+        margin: 2px 0 0 2px;
+        box-shadow: 2px 2px;
+    }
+{% endblock %}
+
+{% block content %}
+    <div id="content">
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <a href="{% url 'display_block_workers' profession='ochroniarz' %}"><- Wróć</a>
+            <h1 style="padding-left: 20px;">DODAJ NOWEGO PRACOWNIKA</h1>
+        </div>
+        <div id="form_edit">
+            <form method="post" action="{% url 'add_new_worker' %}">
+                {% csrf_token %}
+                <label for="name">Imię</label> <input type="text" name="name" required> <br>
+                <label for="surname">Nazwisko</label> <input type="text" name="surname" required> <br>
+                <label for="email">E-mail</label> <input type="email" name="email" placeholder="email@gmail.com" required> <br>
+                <label for="phone_number">Numer telefonu</label> <input type="number" name="phone_number" required> <br>
+
+                <label for="profession">Profesja:</label>
+                <select name="profession">
+                    <option value="ochroniarz">Ochroniarz</option>
+                    <option value="sprzatacz">Sprzątacz</option>
+                    <option value="barista">Barista</option>
+                    <option value="farmaceuta">Farmaceuta</option>
+                    <option value="recepcjonista">Recepcjonista</option>
+                    <option value="pielegniarz">Pielęgniarz</option>
+                    <option value="lekarz specjalista">Lekarz specjalista</option>
+                    <option value="ordynator">Ordynator</option>
+                    <option value="dyrektor">Dyrektor</option>
+                    <option value="lekarz naczelny">Lekarz naczelny</option>
+                </select><br>
+
+                <label for="birthday">Data urodzin: </label> <input type="date" name="birthday"> <br>
+                <label for="family_city">Miasto Urodzenia: </label> <input type="text" name="family_city"> <br>
+
+                <label for="profession_description">Opis: </label> <br>
+                <textarea name="profession_description" rows="8" cols="80"></textarea> <br>
+
+                <input type="submit" value="Zapisz!">
+            </form>
+        </div>
+    </div>
+{% endblock %}

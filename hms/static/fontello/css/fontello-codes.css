@@ -1,0 +1,9 @@
+
+.icon-user:before { content: '\e800'; } /* '' */
+.icon-key:before { content: '\e801'; } /* '' */
+.icon-phone:before { content: '\e802'; } /* '' */
+.icon-flow-merge:before { content: '\e803'; } /* '' */
+.icon-warehouse:before { content: '\e840'; } /* '' */
+.icon-mail-alt:before { content: '\f0e0'; } /* '' */
+.icon-birthday:before { content: '\f1fd'; } /* '' */
+.icon-address-card:before { content: '\f2bb'; } /* '' */

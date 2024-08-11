@@ -1,0 +1,91 @@
+{% extends 'main.html' %}
+
+{% block title %}Grafik{% endblock %}
+
+{% block css %}
+<style>
+    body{
+        background-color: #3b404e;
+    }
+    .meet_tile {
+        background-color: #72471f;
+        border-radius: 30px;
+        width: 444px;
+        margin: 20px;
+        text-align: center;
+        color: #806d18;
+        text-shadow: 1px 1px 1px #000000;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 28px;
+        box-shadow: 6px 6px 0px #5b330e;
+    }
+    #display_workers {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    .meet_title {
+        width: 100%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: #8c7718;
+        font-size: 35px;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        border-radius: 30px;
+        background: #7d5025;
+        border-bottom: 2px solid #583310;
+        border-right: 1px solid #583310;
+    }
+    .description {
+        margin-top: 10px;
+        height: 90px;
+        padding: 5px 15px;
+        border-radius: 30px;
+        background: #7d5025;
+        border: 2px solid #633c18;
+        text-align: justify;
+        white-space: normal;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        font-size: 80%;
+    }
+    .description::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block js %}
+    $(document).ready(function(){
+        $(".meet_tile").contextmenu(function (e) {
+            e.preventDefault();
+            var id = $(this).closest('.meet_tile').data('worker-id');
+            var url = `/edit_meet/${id}/`;
+            window.location.href = url;
+        });
+    });
+{% endblock %}    
+
+{% block content %}  
+    <div id="display_workers">
+        {% for meet in meets %}
+            {% if meet.date >= today %}
+                <div class="meet_tile" data-worker-id="{{meet.id}}">
+                    <div class="meet_title">
+                        {{meet.title}}<br>
+                        {{meet.date|date:"d-m-Y"}}
+                    </div>
+                    Pokój: {{meet.room}}<br>
+                    Początek: {{meet.start|date:"H:i"}}<br>
+                    Koniec: {{meet.end|time:"H:i"}}<br>
+                    <div class="description" style="min-height: 150px;">
+                        {% for worker in meet.workers.all %}
+                            {{worker.name}} {{worker.surname}}<br>
+                        {% endfor %}
+                    </div>
+                    <div class="description">{{meet.description}}</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>     
+{% endblock %}  

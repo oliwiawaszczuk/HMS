@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wyswietlanie Pracownikow</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        body {
+            background-color: #343541;
+            color: #d1d5db;
+            font-size: 20px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        table {
+            width: 100%;
+            padding:10px;
+        }
+        table td {
+            padding: 5px 10px;
+            border: 2px solid black;
+            margin: 0;
+        }
+        table th {
+            color: white;
+        }
+        table input {
+            background-color: #58595f;
+            border: none;
+            color: white;
+        }
+        #description_of_profession{
+            background-color: #58595f;
+            width: 35%;
+            height: 20%;
+            position: absolute;
+            bottom: 100px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $('input').hide();
+<!--            $('#description_of_profession').hide();-->
+<!--            $('.profession_description').hide();-->
+
+            $(".table_td").dblclick(function () {
+                var spanElement = $(this).find("span");
+                var inputElement = $(this).find("input");;
+
+                spanElement.hide();
+                inputElement.show().val(spanElement.text()).focus();
+            });
+
+            $(".table_td input").on("blur", function () {
+                var spanElement = $(this).closest("table td").find("span");
+                var inputElement = $(this);
+
+                inputElement.hide();
+                spanElement.show();
+            });
+
+            $(".table_td input").on("keydown", function (event) {
+                if (event.which == 13) {
+                    var inputValue = $(this).val();
+                    if (inputValue != "") {
+                        var spanElement = $(this).closest("table td").find("span");
+
+                        spanElement.text(inputValue);
+                        $(this).hide();
+                        spanElement.show();
+                    }
+                }
+            });
+
+            $("table td").on("mouseover", function (event) {
+                var text = $(this).closest(".profession_description").find("span").text();
+                var display_div = $('#description_of_profession').find("span");
+
+                display_div.text(text);
+                display_div.show();
+            });
+
+            $("#description_of_profession").on("mouseout", function (event) {
+                var text = $(this).closest(".profession_description");
+                text.hide();
+            });
+
+        });
+    </script>
+
+</head>
+<body>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Login</th>
+            <th>Hasło</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Wiek</th>
+            <th>E-mail</th>
+            <th>Numer Telefonu</th>
+            <th>Profesja</th>
+            <th>Miasto pochodzenia</th>
+        </tr>
+        {% for worker in workers %}
+        <tr>
+            <td style="text-align: center; padding:0;">{{worker.id}}</td>
+            <td class="table_td"><span>{{worker.login}}</span><input></td>
+            <td class="table_td"><span>{{worker.password}}</span><input></td>
+            <td class="table_td"><span>{{worker.name}}</span><input></td>
+            <td class="table_td"><span>{{worker.surname}}</span><input></td>
+            <td class="table_td" style="text-align: center; padding:0;"><span>{{worker.get_age}}</span><input></td>
+            <td class="table_td"><span>{{worker.email}}</span><input></td>
+            <td class="table_td"><span>{{worker.phone_number}}</span><input></td>
+            <td class="table_profession"><span>{{worker.get_profession_display}}</span></td>
+            <td class="table_td"><span>{{worker.family_city}}</span><input></td>
+            <td class="profession_description"><span>{{worker.profession_description}}</span></td>
+        </tr>
+        {% endfor %}
+        <tr id="description_of_profession">
+
+        </tr>
+    </table>
+</body>
+</html>

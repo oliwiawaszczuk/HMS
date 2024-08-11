@@ -1,0 +1,65 @@
+{% extends 'main.html' %}
+
+{% block title %}Zarejestruj nowego Pacjenta{% endblock %}
+
+{% block css %}
+    #content, h2 {
+        width: 60%;
+        background-color: #38434A;
+        margin: 20px auto;
+        border: 5px dotted #9acc5d;
+        padding: 20px 50px;
+        border-radius: 20px;
+        color: #8aba4f;
+        font-size: 34px;
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        text-align: center;
+        text-shadow: 3px 3px 2px #3c630c;
+    }
+    #content input, #content textarea, #content select {
+        background-color: #93c15b;
+        border: 2px solid #628932;
+        font-size: 24px;
+        padding: 4px 8px;
+        border-radius: 10px;
+        font-family:Verdana, Geneva, Tahoma, sans-serif;
+        color: #264007;
+        box-shadow: 3px 3px 3px #507325;
+        margin-right: 20px;
+    }
+    #content input::placeholder{
+        color: #59614f;
+        font-size: 22px;
+    }
+    #content input:focus{
+        outline: none;
+        background-color: #77aa39;
+        border: 2px solid #507523;
+    }
+    #content label{
+        padding-right: 4px;
+    }
+    .break {
+        height: 10px;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+{% endblock %}
+
+{% block content %}
+<h2>Dodaj nowego pacjenta</h2>
+<div id="content">
+    <form method="post" action="{% url 'edited_patient' id=patient.id%}">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if field.name != 'description' %} {{ field.label_tag }} {% endif %}
+            {{ field }}
+            <div class="break"></div>
+        {% endfor %}
+        <input type="submit" value="Zaktualizuj" style="padding: 6px 50px; border-radius: 20px;">
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+
+{% block title %}Ustaw Wizytę{% endblock %}
+
+{% block css %}
+
+#content {
+    width: 60%;
+    margin: 40px auto;
+    padding: 20px 50px;
+    text-align: center;
+    border: 4px dotted #5c542e;
+    border-radius: 30px;
+}
+select {
+    padding: 8px 15px;
+    background-color: #7f7855;
+    outline: none;
+    border: 2px solid #5c542e;
+    font-size: 20px;
+    border-radius: 20px;
+    color: #c2b364;
+    text-shadow: 2px 2px 1px #5c542e;
+}
+label {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 26px;
+    color: #a89b5b;
+    text-shadow: 2px 2px 2px #5c542e;
+}
+.break{
+    height: 20px;
+}
+
+
+{% endblock %}
+
+{% block content %}
+
+<div id="content">
+    <form>
+        <label for="patient">Wybierz pacjenta: </label>
+        <select>
+            {% for patient in patients %}
+                <option name="name">{{patient.name}} {{patient.surname}} {{patient.pesel}}</option>
+            {% endfor %}
+        </select>
+        <div class="break"></div>
+        <label for="doctor">Wybierz lekarza: </label>
+        <select>
+            {% for doctor in doctors %}
+                <option name="name">{{doctor.name}} {{doctor.surname}}</option>
+            {% endfor %}
+        </select>
+        <div class="break"></div>
+        <input type="submit">
+    </form>
+</div>
+
+{% endblock %}

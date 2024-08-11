@@ -1,0 +1,138 @@
+{% extends 'main.html' %}
+
+{% block title %}Wyświetlanie Pracowników{% endblock %}
+
+{% block css %}
+    body{
+        background-color: #3b404e;
+    }
+    .worker_tile {
+        background-color: #7f7855;
+        border-radius: 30px;
+        width: 444px;
+        height: 380px;
+        margin: 20px;
+        text-align: center;
+        color: rgb(113, 85, 20);
+        text-shadow: 1px 1px 1px rgb(23, 23, 23);
+        font-size: 25px;
+        box-shadow: 6px 6px 0px #6d6749;
+    }
+    .worker_tile i {
+        color: rgb(90, 65, 8);
+        text-shadow: none;
+    }
+    #display_workers {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    .name_worker {
+        width: 100%;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: rgb(82, 58, 0);
+        font-size: 35px;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        border-radius: 30px;
+        background: #7c744b;
+        border-bottom: 2px solid #665f38;
+        border-right: 1px solid #665f38;
+    }
+    .description {
+        margin-top: 10px;
+        height: 90px;
+        padding: 5px 15px;
+        border-radius: 30px;
+        background: #7c744b;
+        border: 2px solid #665f38;
+        text-align: justify;
+        white-space: normal;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        font-size: 80%;
+    }
+    .description::-webkit-scrollbar {
+        display: none;
+    }
+    #menu {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background: #8c8357;
+        border-radius: 15px;
+        margin: 5px;
+        box-shadow: 5px 5px 2px #6e6743;
+    }
+    .menu_tile {
+        width: 130px;
+        height: 20px;
+        background-color: #d3c893;
+        border: 3px dashed #8a814f;
+        margin: 5px 8px;
+        border-radius: 20px;
+        padding: 2px 15px;
+        color: #47401e;
+        text-align: center;
+    }
+    #menu a {
+        text-decoration: none;
+        color: #47401e;
+    }
+    #add_new_worker {
+        text-align: center;
+        font-size: 32px;
+        font-weight: 800;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+{% endblock %}
+
+{% block js %}
+    $(document).ready(function(){
+        $(".worker_tile").contextmenu(function (e) {
+            e.preventDefault();
+            var id = $(this).closest('.worker_tile').data('worker-id');
+            var url = `/edit_worker/${id}/`;
+            window.location.href = url;
+            // pobrac id i przekazac do nowej strony z wprowadzaniem zmian
+            // na tej stronie dodawac wartosci do inputow, ktore mozna edytowac
+            //przycisk zapisz zapisuje zmiany w bazie danych
+            // trzeba sprawdzic czy login sie nie powtarza
+        });
+    });
+{% endblock %}
+
+{% block content %}
+
+    <div id="menu">
+        <a href="{% url 'add_new_worker_page' %}"><div id="add_new_worker">+</div></a>
+        <a href="{% url 'display_block_workers' profession='ochroniarz' %}"><div class="menu_tile">Ochroniarz {{count_workers.ochroniarz}}</div></a>
+        <a href="{% url 'display_block_workers' profession='sprzatacz' %}"><div class="menu_tile">Sprzątacz {{count_workers.sprzatacz}}</div></a>
+        <a href="{% url 'display_block_workers' profession='barista' %}"><div class="menu_tile">Barista {{count_workers.barista}}</div></a>
+        <a href="{% url 'display_block_workers' profession='farmaceuta' %}"><div class="menu_tile">Farmaceuta {{count_workers.farmaceuta}}</div></a>
+        <a href="{% url 'display_block_workers' profession='recepcjonista' %}"><div class="menu_tile">Recepcjonista {{count_workers.recepcjonista}}</div></a>
+        <a href="{% url 'display_block_workers' profession='pielegniarz' %}"><div class="menu_tile">Pielęgniarz {{count_workers.pielegniarz}}</div></a>
+        <a href="{% url 'display_block_workers' profession='lekarz specjalista' %}"><div class="menu_tile">Lekarz Specjalista {{count_workers.lekarz_specjalista}}</div></a>
+        <a href="{% url 'display_block_workers' profession='ordynator' %}"><div class="menu_tile">Ordynator {{count_workers.ordynator}}</div></a>
+        <a href="{% url 'display_block_workers' profession='dyrektor' %}"><div class="menu_tile">Dyrektor {{count_workers.dyrektor}}</div></a>
+        <a href="{% url 'display_block_workers' profession='lekarz naczelny' %}"><div class="menu_tile">Lekarz naczelny {{count_workers.lekarz_naczelny}}</div></a>
+    </div>
+
+    <div id="display_workers">
+        {% for worker in workers %}
+            {% if worker.profession == profession%}
+                <div class="worker_tile" data-worker-id="{{worker.id}}">
+                    <div class="name_worker">{{worker.name}} {{worker.surname}}</div>
+                    <i class="icon-user"></i>{{worker.username}}<br>
+                    <i class="icon-key"></i>{{worker.orginal_password}}<br>
+                    <i class="icon-mail-alt"></i>{{worker.email}}<br>
+                    <i class="icon-phone"></i>{{worker.get_number_format}}<br>
+                    <i class="icon-birthday"></i>{{worker.birthday}}r {{worker.get_age}}lat<br>
+                    <i class="icon-warehouse"></i>{{worker.family_city}}<br>
+                    <i class="icon-flow-merge"></i>{{worker.get_profession_display}}<br>
+                    <div class="description">{{worker.profession_description}}</div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
